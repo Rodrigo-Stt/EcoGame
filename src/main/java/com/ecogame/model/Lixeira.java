@@ -1,9 +1,5 @@
 package com.ecogame.model;
 
-/**
- * Representa uma lixeira fixa na base da tela.
- * Cada lixeira aceita apenas um tipo de lixo.
- */
 public class Lixeira {
 
     private final TipoLixo tipoAceito;
@@ -16,7 +12,6 @@ public class Lixeira {
         this.x = x;
     }
 
-    /** Verifica se um item de lixo pertence a esta lixeira. */
     public boolean aceita(ItemLixo item) {
         return item.getTipo() == this.tipoAceito;
     }

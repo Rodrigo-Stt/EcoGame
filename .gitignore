@@ -4,3 +4,21 @@ target/
 .idea/
 .vscode/
 *.log
+
+# Banco local gerado pela aplicação
+ranking.db
+
+# Ferramentas auxiliares de documentação
+analise/
+documentacao/
+analisar_projeto.py
+consolidar_analises.py
+gerar_final.py
+gerar_introducao.py
+gerar_pesquisa_tema.py
+gerar_plano_desenvolvimento.py
+gerar_desenvolvimento.py
+
+# Python
+__pycache__/
+*.pyc

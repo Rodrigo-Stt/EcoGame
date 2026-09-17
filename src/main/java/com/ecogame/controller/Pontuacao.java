@@ -3,7 +3,7 @@ package com.ecogame.controller;
 public class Pontuacao {
 
     private int pontos = 0;
-    private int vidas = 3;
+    private int vidas = 1;
 
     private static final int PONTOS_POR_ACERTO = 10;
 
@@ -13,7 +13,7 @@ public class Pontuacao {
 
     public void reiniciar() {
         pontos = 0;
-        vidas = 3;
+        vidas = 1;
     }
 
     public void registrarErro() {

@@ -2,9 +2,6 @@ package com.ecogame.view;
 
 import javax.swing.*;
 
-/**
- * Janela principal da aplicação, responsável por hospedar o painel do jogo.
- */
 public class JanelaJogo extends JFrame {
 
     private final PainelJogo painelJogo;
@@ -21,10 +18,6 @@ public class JanelaJogo extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    /**
-     * O foco só pode ser pedido depois que a janela está visível,
-     * senão o KeyListener do painel não recebe os eventos de teclado.
-     */
     @Override
     public void setVisible(boolean visivel) {
         super.setVisible(visivel);

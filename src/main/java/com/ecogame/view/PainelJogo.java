@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.ecogame.dao.RankingDAO;
+import java.util.List;
+
 
 public class PainelJogo extends JPanel {
 
@@ -31,6 +34,11 @@ public class PainelJogo extends JPanel {
     private Timer timerGeracao;
 
     private final JButton botaoReiniciar = new JButton("Reiniciar");
+
+    private final RankingDAO RankingDAO = new RankingDAO(); 
+    private boolean  pontuacaoSalva = false; 
+    private  List<String> melhoresPontuacoes = new ArrayList<>(); 
+
 
     public PainelJogo() {
         setPreferredSize(new Dimension(LARGURA, ALTURA));
@@ -102,7 +110,7 @@ public class PainelJogo extends JPanel {
         timerGeracao.start();
 
         setLayout(null);
-        botaoReiniciar.setBounds(LARGURA / 2 - 60, ALTURA / 2 + 20, 120, 36);
+        botaoReiniciar.setBounds(LARGURA / 2 - 60, ALTURA - 75, 120, 36);
         botaoReiniciar.setVisible(false);
         botaoReiniciar.addActionListener(e -> reiniciarJogo());
         add(botaoReiniciar);
@@ -130,18 +138,37 @@ public class PainelJogo extends JPanel {
         });
 
         if (pontuacao.jogoAcabou()) {
-            timerJogo.stop();
-            timerGeracao.stop();
-            botaoReiniciar.setVisible(true);
+            finalizarJogo();
         }
 
         repaint();
         
     }
 
+    private void finalizarJogo(){
+        timerJogo.stop();
+        timerGeracao.stop();
+
+        if (!pontuacaoSalva) {
+            pontuacaoSalva = true;
+            String nome = JOptionPane.showInputDialog(
+                this, "Digite seu nome para salvar a pontuação:",
+                "Fim de jogo", JOptionPane.PLAIN_MESSAGE);
+                if (nome == null || nome.isBlank()) {
+                    nome = "Jogador";
+                }
+                RankingDAO.salvarPontuacao(nome, pontuacao.getPontos());
+                melhoresPontuacoes = RankingDAO.buscarMelhoresPontuacoes(5);
+        }
+        
+        botaoReiniciar.setVisible(true);
+    }
+
     private void reiniciarJogo() {
         itens.clear();
         pontuacao.reiniciar();
+        pontuacaoSalva = false;
+        melhoresPontuacoes.clear();
         botaoReiniciar.setVisible(false);
 
         timerJogo.start();
@@ -178,7 +205,6 @@ public class PainelJogo extends JPanel {
     }
     }
 
-    /*/* */
 
     private void desenharIconeItem(Graphics2D g2, ItemLixo item) {
         int x = (int) item.getX();
@@ -299,9 +325,23 @@ public class PainelJogo extends JPanel {
     private void desenharFimDeJogo(Graphics2D g2) {
         g2.setColor(new Color(0, 0, 0, 150));
         g2.fillRect(0, 0, LARGURA, ALTURA);
+
         g2.setColor(Color.WHITE);
-        g2.setFont(new Font("SansSerif", Font.BOLD, 28));
-        g2.drawString("Fim de jogo! Pontos: " + pontuacao.getPontos(), 150, ALTURA / 2);
+        g2.setFont(new Font("SansSerif", Font.BOLD, 26));
+        g2.drawString("Fim de jogo!", 270, 85);
+
+        g2.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        g2.drawString("pontuações:" + pontuacao.getPontos(), 270, 125);
+        
+        g2.setFont(new Font("SansSerif", Font.BOLD, 16));
+        g2.drawString("Melhores Pontuações:", 270, 180);
+
+        g2.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        int y = 200; 
+        for (String linha :  melhoresPontuacoes) {
+            g2.drawString(linha, 270, y);
+            y += 22; 
+        }
     }
 
     private Color corParaTipo(TipoLixo tipo) {
@@ -312,4 +352,6 @@ public class PainelJogo extends JPanel {
             case ORGANICO -> new Color(150, 90, 180);
         };
     }
+
+    
 }

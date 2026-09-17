@@ -1,9 +1,6 @@
 package com.ecogame.model;
 
-/**
- * Representa um item de lixo que cai do topo da tela.
- * Guarda posição, tipo e velocidade de queda.
- */
+
 public class ItemLixo {
 
     private double x;
@@ -19,7 +16,6 @@ public class ItemLixo {
         this.tipo = tipo;
     }
 
-    /** Atualiza a posição vertical do item, simulando a queda. */
     public void cair() {
         this.y += velocidade;
     }
